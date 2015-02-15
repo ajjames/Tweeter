@@ -102,10 +102,9 @@ class FakeTweeterServer
         }
         else // otherwise, store a copy from defaults, and use it
         {
-            var defaultTwits = Array(defaultData)
-            remoteStore[username] = defaultTwits
+            remoteStore[username] = Array(defaultData)
             save()
-            return defaultTwits
+            return remoteStore[username]!
         }
     }
 
@@ -129,6 +128,10 @@ class FakeTweeterServer
         if let dictionary = NSKeyedUnarchiver.unarchiveObjectWithFile(dataPath) as? [String:[Twit]]
         {
             remoteStore = dictionary
+        }
+        else
+        {
+            remoteStore = [String:[Twit]]()
         }
     }
 
