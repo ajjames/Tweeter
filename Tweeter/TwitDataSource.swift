@@ -90,10 +90,22 @@ let twit2 = Twit(text: "Is this thing on?", date: NSDate() )
 let twit3 = Twit(text: "This is a really, really, really long text. Word wrapping is expected.", date: NSDate() )
 let twit4 = Twit(text: "You can pull down to refresh.", date: NSDate() )
 let defaultData = [twit1, twit2, twit3, twit4]
-var remoteStore = [String:[Twit]]()
+var privateRemoteStore:[String:[Twit]]?
 
 class FakeTweeterServer
 {
+
+    class var remoteStore: [String:[Twit]]
+    {
+        get {
+            privateRemoteStore = privateRemoteStore ?? [String:[Twit]]()
+            return privateRemoteStore!
+        }
+        set {
+            privateRemoteStore = newValue
+        }
+    }
+
     class func fetchTwitsForUser(username:String) -> [Twit]
     {
         // if there is data in the fake store, use it
