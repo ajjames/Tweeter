@@ -215,25 +215,25 @@
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vx5-v2-n01" userLabel="signInView">
-                                                        <rect key="frame" x="200" y="266" width="200" height="68"/>
+                                                        <rect key="frame" x="160" y="246" width="280" height="108"/>
                                                         <subviews>
-                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="username" textAlignment="center" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="eFf-qo-iJP">
-                                                                <rect key="frame" x="0.0" y="0.0" width="200" height="30"/>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="username" textAlignment="center" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="eFf-qo-iJP">
+                                                                <rect key="frame" x="0.0" y="0.0" width="280" height="50"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="200" id="2s7-uv-lnE"/>
-                                                                    <constraint firstAttribute="height" constant="30" id="sQz-2l-YRF"/>
+                                                                    <constraint firstAttribute="width" constant="280" id="2s7-uv-lnE"/>
+                                                                    <constraint firstAttribute="height" constant="50" id="sQz-2l-YRF"/>
                                                                 </constraints>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="26"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="go" enablesReturnKeyAutomatically="YES"/>
                                                                 <connections>
                                                                     <outlet property="delegate" destination="avC-kf-dro" id="d92-AR-neK"/>
                                                                 </connections>
                                                             </textField>
-                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="password" textAlignment="center" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="Mw7-EZ-kIO">
-                                                                <rect key="frame" x="0.0" y="38" width="200" height="30"/>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="password" textAlignment="center" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="Mw7-EZ-kIO">
+                                                                <rect key="frame" x="0.0" y="58" width="280" height="50"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="26"/>
                                                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="go" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                                                                 <connections>
                                                                     <outlet property="delegate" destination="avC-kf-dro" id="a0a-XD-Beu"/>
@@ -254,7 +254,7 @@
                                                         </constraints>
                                                     </view>
                                                     <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="ipK-F2-toc">
-                                                        <rect key="frame" x="290" y="342" width="20" height="20"/>
+                                                        <rect key="frame" x="290" y="362" width="20" height="20"/>
                                                     </activityIndicatorView>
                                                 </subviews>
                                                 <constraints>

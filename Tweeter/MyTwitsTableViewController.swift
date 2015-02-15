@@ -19,6 +19,7 @@ class MyTwitsTableViewController: UITableViewController
         super.viewDidLoad()
         twitDataSource = TwitDataSource()
         tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 60.0
 
         refreshControl = UIRefreshControl()
         refreshControl!.tintColor = UIColor.whiteColor()

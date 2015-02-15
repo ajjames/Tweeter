@@ -88,7 +88,8 @@ class TwitDataSource
 let twit1 = Twit(text: "Testing, 1...,2...,3...", date: NSDate() )
 let twit2 = Twit(text: "Is this thing on?", date: NSDate() )
 let twit3 = Twit(text: "This is a really, really, really long text. Word wrapping is expected.", date: NSDate() )
-let defaultData = [twit1, twit2, twit3]
+let twit4 = Twit(text: "You can pull down to refresh.", date: NSDate() )
+let defaultData = [twit1, twit2, twit3, twit4]
 var remoteStore = [String:[Twit]]()
 
 class FakeTweeterServer
