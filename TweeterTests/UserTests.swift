@@ -18,7 +18,7 @@ class UserTests: AsyncTestCase
         var username: String?
         var error: NSError?
         
-        User.signIn("user", password: "pass") { user, err in
+        User.signIn(username: "user", password: "pass") { user, err in
             username = user
             error = err
             self.fulfill()
@@ -39,7 +39,7 @@ class UserTests: AsyncTestCase
         var username: String?
         var error: NSError?
 
-        User.signIn("baduser", password: "pass") { user, err in
+        User.signIn(username: "baduser", password: "pass") { user, err in
             username = user
             error = err
             self.fulfill()

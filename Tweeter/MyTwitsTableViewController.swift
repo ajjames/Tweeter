@@ -22,16 +22,16 @@ class MyTwitsTableViewController: UITableViewController
         tableView.estimatedRowHeight = 60.0
 
         refreshControl = UIRefreshControl()
-        refreshControl!.tintColor = UIColor.whiteColor()
-        refreshControl!.addTarget(self, action:"fetchTwits", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl!.tintColor = .white
+        refreshControl!.addTarget(self, action: #selector(fetchTwits), for: UIControlEvents.valueChanged)
     }
 
-    override func viewDidAppear(animated: Bool)
+    override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
         if User.currentUser == nil
         {
-            performSegueWithIdentifier("showSignIn", sender: nil)
+            performSegue( withIdentifier: "showSignIn", sender: nil)
         }
         else
         {
@@ -39,11 +39,10 @@ class MyTwitsTableViewController: UITableViewController
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?)
-    {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showNewTwit"
         {
-            if let destinationViewController = segue.destinationViewController as? NewTwitViewController
+            if let destinationViewController = segue.destination as? NewTwitViewController
             {
                 destinationViewController.saveTwitClosure = self.saveTwit
             }
@@ -52,7 +51,7 @@ class MyTwitsTableViewController: UITableViewController
         {
             User.signout()
             tableView.reloadData()
-            if let destinationViewController = segue.destinationViewController as? SignInViewController
+            if let destinationViewController = segue.destination as? SignInViewController
             {
                 destinationViewController.signedInClosure = self.didSignIn
             }
@@ -61,19 +60,17 @@ class MyTwitsTableViewController: UITableViewController
 
     //MARK: UITableViewController
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int
-    {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return twitDataSource.twits.count
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
-    {
-        var cell:TwitTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("twitCell") as TwitTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell: TwitTableViewCell = self.tableView.dequeueReusableCell(withIdentifier: "twitCell") as! TwitTableViewCell
         let rowIndex = max(twitDataSource.twits.count - indexPath.row - 1,0)
         let twit = twitDataSource.twits[rowIndex]
         cell.twitTextLabel.text = twit.text
@@ -85,16 +82,16 @@ class MyTwitsTableViewController: UITableViewController
 
     func saveTwit(newTwit:String)
     {
-        twitDataSource.sendTwit(newTwit, completion: { err in
-            GCDDispatchMain({ () -> () in
-                if err == nil
-                {
-                    self.presentedViewController?.dismissViewControllerAnimated(true, completion: { () -> Void in
+        do {
+            try twitDataSource.sendTwit(newTwit: newTwit, completion: {
+                GCDDispatchMain {
+                    self.presentedViewController?.dismiss(animated: true) {
                         self.fetchTwits()
-                    })
-                }
+                    }}
             })
-        })
+        } catch {
+            // Handle error
+        }
     }
 
     func didSignIn()
@@ -102,17 +99,21 @@ class MyTwitsTableViewController: UITableViewController
         fetchTwits()
     }
 
-    func fetchTwits()
+    @objc func fetchTwits()
     {
         self.refreshControl?.beginRefreshing()
-        twitDataSource.fetchNewTwits { newTwitsFound, error in
-            GCDDispatchMain({ () -> () in
-                self.refreshControl?.endRefreshing()
-                if newTwitsFound && error == nil
-                {
-                    self.tableView.reloadData()
+        do {
+            try twitDataSource.fetchNewTwits { newTwitsFound in
+                GCDDispatchMain {
+                    self.refreshControl?.endRefreshing()
+                    if newTwitsFound {
+                        self.tableView.reloadData()
+                    }
                 }
-            })
+            }
+        } catch {
+            // Handle error
         }
+        
     }
 }

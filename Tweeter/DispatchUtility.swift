@@ -8,27 +8,27 @@
 
 import Foundation
 
-func GCDDispatchMain(closure:()->())
+func GCDDispatchMain(closure: @escaping ()->())
 {
-    dispatch_async(dispatch_get_main_queue(), closure)
+    DispatchQueue.main.async(execute: closure)
 }
 
-func GCDDispatchAsyncHigh(closure: ()->())
+func GCDDispatchAsyncHigh(closure: @escaping ()->())
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), closure)
+    DispatchQueue.global(qos: .userInteractive).async(execute: closure)
 }
 
-func GCDDispatchAsyncDefault(closure: ()->())
+func GCDDispatchAsyncDefault(closure: @escaping ()->())
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), closure)
+    DispatchQueue.global(qos: .default).async(execute: closure)
 }
 
-func GCDDispatchAsyncLow(closure: ()->())
+func GCDDispatchAsyncLow(closure: @escaping ()->())
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), closure)
+    DispatchQueue.global(qos: .utility).async(execute: closure)
 }
 
-func GCDDispatchAsyncBackground(closure: ()->())
+func GCDDispatchAsyncBackground(closure: @escaping ()->())
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), closure)
+    DispatchQueue.global(qos: .background).async(execute: closure)
 }

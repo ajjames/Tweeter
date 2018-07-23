@@ -12,8 +12,8 @@ extension NSDate
 {
     public func toString() -> String
     {
-        let df = NSDateFormatter()
+        let df = DateFormatter()
         df.dateFormat = "MM-dd-yyyy"
-        return df.stringFromDate(self)
+        return df.string(from: self as Date)
     }
 }

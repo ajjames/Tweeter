@@ -19,29 +19,29 @@ class SignInViewController: UIViewController, UITextFieldDelegate
 
     //MARK: UIViewController
 
-    override func viewDidAppear(animated: Bool)
+    override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"keyboardWillChangeFrame:", name:UIKeyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(notification:)), name:NSNotification.Name.UIKeyboardWillChangeFrame, object: nil)
     }
 
-    override func viewWillDisappear(animated: Bool)
+    override func viewWillDisappear(_ animated: Bool)
     {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self);
+        NotificationCenter.default.removeObserver(self);
     }
 
     //MARK: Keyboard Notifications
 
-    func keyboardWillChangeFrame(notification:NSNotification)
+    @objc func keyboardWillChangeFrame(notification:NSNotification)
     {
         var height = CGFloat(0)
-        if let some = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().origin.y
+        if let some = (notification.userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.origin.y
         {
             height = some
         }
 
-        if let some = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.CGRectValue().origin.y
+        if let some = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.origin.y
         {
             let delta = min(-(height - some), 0)
             height = delta / 2.0
@@ -53,16 +53,16 @@ class SignInViewController: UIViewController, UITextFieldDelegate
 
     //MARK: UITextFieldDelegate
 
-    func textFieldShouldReturn(textField: UITextField) -> Bool
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
         spinner.startAnimating()
-        User.signIn(usernameTextField.text, password: passwordTextField.text) { username, error in
-            GCDDispatchMain({
-                if let someUsername = username
+        User.signIn(username: usernameTextField.text!, password: passwordTextField.text ?? "") { username, error in
+            GCDDispatchMain(closure: {
+                if username != nil
                 {
                     self.spinner.stopAnimating()
                     textField.endEditing(true)
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    self.dismiss(animated: true, completion: nil)
                     self.signedInClosure()
                 }
                 else
@@ -79,16 +79,16 @@ class SignInViewController: UIViewController, UITextFieldDelegate
 
     private func showFailSignIn()
     {
-        UIView.animateWithDuration(0.02, animations: { () -> Void in
-            self.signInView.transform = CGAffineTransformMakeTranslation(-8, 0)
+        UIView.animate(withDuration: 0.02, animations: { () -> Void in
+            self.signInView.transform = CGAffineTransform(translationX: -8, y: 0)
             }, completion: { finished in
 
-                UIView.animateWithDuration(0.04, animations: { () -> Void in
-                    self.signInView.transform = CGAffineTransformMakeTranslation(16, 0)
+                UIView.animate(withDuration: 0.04, animations: { () -> Void in
+                    self.signInView.transform = CGAffineTransform(translationX: 16, y: 0)
                     }, completion: { finished in
 
-                        UIView.animateWithDuration(0.02, animations: { () -> Void in
-                            self.signInView.transform = CGAffineTransformIdentity
+                        UIView.animate(withDuration: 0.02, animations: { () -> Void in
+                            self.signInView.transform = .identity
                             }, completion:nil)
                 })
         })

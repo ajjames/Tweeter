@@ -10,27 +10,21 @@ import Foundation
 
 let kUsername = "username"
 
-class User
-{
-
-    class func signIn(username:String, password:String, completion:(username:String?,error:NSError?)->())
-    {
+class User {
+ 
+    class func signIn(username: String, password: String, completion: @escaping (_ username: String?, _ error: NSError?)->()) {
         GCDDispatchAsyncHigh { () -> () in
             var theUser: String?
             var theError: NSError?
             //simulate network latency
-            NSThread.sleepForTimeInterval(1)
-            if username.lowercaseString.hasPrefix("bad")
-            {
+            Thread.sleep(forTimeInterval: 1)
+            if username.lowercased().hasPrefix("bad") {
                 theError = NSError(domain: "unknown user", code: 0, userInfo: nil)
-            }
-            else
-            {
+            } else {
                 theUser = username
             }
             User.currentUser = theUser
-            completion(username: theUser, error: theError)
-
+            completion(theUser, theError)
         }
     }
 
@@ -39,25 +33,17 @@ class User
         User.currentUser = nil
     }
 
-
     class var currentUser: String?
     {
-        get
-        {
-            return NSUserDefaults.standardUserDefaults().stringForKey(kUsername)
-        }
-        set
-        {
-            if newValue == nil
-            {
-                NSUserDefaults.standardUserDefaults().removeObjectForKey(kUsername)
+        get {
+            return UserDefaults.standard.string(forKey: kUsername)
+        } set {
+            if newValue == nil {
+                UserDefaults.standard.removeObject(forKey: kUsername)
+            } else {
+                UserDefaults.standard.set(newValue, forKey: kUsername)
             }
-            else
-            {
-                NSUserDefaults.standardUserDefaults().setObject(newValue, forKey: kUsername)
-            }
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.synchronize()
         }
     }
-
 }

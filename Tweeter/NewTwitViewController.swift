@@ -12,7 +12,7 @@ class NewTwitViewController: UIViewController, UITextViewDelegate
 {
     @IBOutlet var twitView: UIView!
     @IBOutlet var twitTextView: UITextView!
-    var saveTwitClosure: (newTwit:String)->() = {newTwit in }
+    var saveTwitClosure: (_ newTwit:String)->() = {newTwit in }
 
     //MARK: UIViewController
 
@@ -23,7 +23,7 @@ class NewTwitViewController: UIViewController, UITextViewDelegate
         twitView.layer.masksToBounds = true
     }
 
-    override func viewDidAppear(animated: Bool)
+    override func viewDidAppear(_ animated: Bool)
     {
         twitTextView.becomeFirstResponder()
     }
@@ -32,38 +32,38 @@ class NewTwitViewController: UIViewController, UITextViewDelegate
 
     @IBAction func saveTwit(sender: UIBarButtonItem)
     {
-        if countElements(twitTextView.text) > 0
+        if twitTextView.text.count > 0
         {
-            saveTwitClosure(newTwit: twitTextView.text)
+            saveTwitClosure(twitTextView.text)
         }
     }
 
     @IBAction func cancel(sender: UIBarButtonItem)
     {
         self.twitTextView.resignFirstResponder()
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
 
     //MARK: UITextViewDelegate
 
-    func textViewShouldBeginEditing(textView: UITextView) -> Bool
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool
     {
         return true
     }
 
-    func textViewShouldEndEditing(textView: UITextView) -> Bool {
+    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         return true
     }
 
-    func textViewDidBeginEditing(textView: UITextView)
+    func textViewDidBeginEditing(_ textView: UITextView)
     {
     }
 
-    func textViewDidEndEditing(textView: UITextView)
+    func textViewDidEndEditing(_ textView: UITextView)
     {
     }
 
-    func textViewDidChange(textView: UITextView)
+    func textViewDidChange(_ textView: UITextView)
     {
     }
 

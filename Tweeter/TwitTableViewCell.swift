@@ -14,15 +14,9 @@ class TwitTableViewCell: UITableViewCell
     @IBOutlet var twitDateLabel: UILabel!
     @IBOutlet var twitBackground: UIView!
 
-    required init(coder aDecoder: NSCoder)
-    {
-        super.init(coder: aDecoder)
-    }
-
     override func awakeFromNib()
     {
         twitBackground.layer.cornerRadius = 5
         twitBackground.layer.masksToBounds = true
     }
-
 }

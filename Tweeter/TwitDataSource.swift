@@ -22,16 +22,14 @@ class Twit: NSObject, NSCoding
 
     required init(coder aDecoder: NSCoder)
     {
-        self.text = aDecoder.decodeObjectForKey("text") as String
-        self.date = aDecoder.decodeObjectForKey("date") as NSDate
+        self.text = aDecoder.decodeObject(forKey: "text") as! String
+        self.date = aDecoder.decodeObject(forKey: "date") as! NSDate
     }
-
-    func encodeWithCoder(aCoder: NSCoder)
-    {
-        aCoder.encodeObject(self.text, forKey: "text")
-        aCoder.encodeObject(self.date, forKey: "date")
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(self.text, forKey: "text")
+        aCoder.encode(self.date, forKey: "date")
     }
-
 }
 
 
@@ -53,32 +51,32 @@ class TwitDataSource
         FakeTweeterServer.load()
     }
 
-    func fetchNewTwits(completion:(newTwitsFound:Bool, error:NSError?)->())
+    func fetchNewTwits(completion:@escaping (_ newTwitsFound: Bool)->()) throws
     {
         GCDDispatchAsyncHigh {
             var foundNewTwits = false
             if let username = User.currentUser
             {
                 //simulate network latency
-                NSThread.sleepForTimeInterval(1)
+                Thread.sleep(forTimeInterval: 1)
                 //fetch new twits
                 let initialCount = self.twitStore.count
                 self.twitStore = FakeTweeterServer.fetchTwitsForUser(username)
                 foundNewTwits = (initialCount < self.twitStore.count)
             }
-            completion(newTwitsFound:foundNewTwits, error: nil)
+            completion(foundNewTwits)
         }
     }
 
-    func sendTwit(newTwit:String, completion:(error:NSError?)->())
+    func sendTwit(newTwit:String, completion:@escaping ()->()) throws
     {
         GCDDispatchAsyncHigh {
             //simulate network latency
-            NSThread.sleepForTimeInterval(1)
+            Thread.sleep(forTimeInterval: 1)
             //save twit
             let twit = Twit(text: newTwit, date: NSDate())
             FakeTweeterServer.saveTwitForUser(User.currentUser!, twit: twit)
-            completion(error: nil)
+            completion()
         }
     }
 
@@ -106,7 +104,7 @@ class FakeTweeterServer
         }
     }
 
-    class func fetchTwitsForUser(username:String) -> [Twit]
+    class func fetchTwitsForUser(_ username: String) -> [Twit]
     {
         // if there is data in the fake store, use it
         if let remoteTwits = remoteStore[username]
@@ -121,7 +119,7 @@ class FakeTweeterServer
         }
     }
 
-    class func saveTwitForUser(username:String, twit:Twit)
+    class func saveTwitForUser(_ username: String, twit: Twit)
     {
         var twits = FakeTweeterServer.fetchTwitsForUser(username)
         twits.append(twit)
@@ -132,13 +130,13 @@ class FakeTweeterServer
 
     class func save()
     {
-        var path = dataPath
-        NSKeyedArchiver.archiveRootObject(remoteStore, toFile: dataPath)
+        let path = dataPath
+        NSKeyedArchiver.archiveRootObject(remoteStore, toFile: path)
     }
 
     class func load()
     {
-        if let dictionary = NSKeyedUnarchiver.unarchiveObjectWithFile(dataPath) as? [String:[Twit]]
+        if let dictionary = NSKeyedUnarchiver.unarchiveObject(withFile: dataPath) as? [String:[Twit]]
         {
             remoteStore = dictionary
         }
@@ -150,9 +148,9 @@ class FakeTweeterServer
 
     class var dataPath: String
     {
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let documentsDirectory: String = paths[0] as String
-        let path = documentsDirectory.stringByAppendingPathComponent("data.plist")
+        let path = documentsDirectory.appending("data.plist")
         return path
     }
 
